@@ -3,7 +3,7 @@ import styles from '@/styles/Home.module.css'
 import Web3 from 'web3'
 import 'bulma/css/bulma.css'
 import { useState } from 'react'
-
+// 0x8e540B47866D11EB268c641EC728c27BEb10AD73
 
 export default function Home() {
   const [web3,setWeb3] = useState()
