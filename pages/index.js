@@ -180,7 +180,7 @@ export default function Home() {
         <div className="container">
           <section className='mt-5'>
             <div className="columns">
-              <div className="column is-two-third">
+              <div className="column is-one-third">
                 <section className='mt-5'>
                   <p>Enter the lottery by sending atleast 0.01 ether</p>
                   <button className='button is-link is-large mt-3' onClick={enterLotteryHandler}>Play Now</button>
@@ -190,7 +190,17 @@ export default function Home() {
                   <button className='button is-primary is-large mt-3' onClick={pickWinnerHandler}>Pick Winner</button>
                 </section>
                 <section className='mt-6'>
+                </section>
+                <section className='mt-5'>
+                <div className="card">
+                  <div className="card-content">
+                    <div className="content">
                   <p><b>Current Lottery ID:</b> {lotteryId}</p>
+                      <h2>Pot</h2>
+                      <p>{lotteryPot} Ether</p>
+                    </div>
+                  </div>
+                </div>
                 </section>
                 <section>
                   <div className="container has-text-danger mt-6">
@@ -202,6 +212,27 @@ export default function Home() {
                       <p>{success}</p>
                   </div>
                 </section>
+              </div>
+              <div className="column is-one-third">
+                
+                <section className='mt-5'>
+                <div className="card">
+                  <div className="card-content">
+                    <div className="content">
+                      <h2>Current Players {lotteryPlayers.length}</h2>
+                        <ul className={`${styles.accounts} ml-0`}>
+                          {
+                            (lotteryPlayers && lotteryPlayers.length>0) &&
+                            lotteryPlayers.map((player,index)=>{
+                              return<li key={`${player}-${index}`}><a href={`https://etherscan.io/${player}`} target='_blank'>{player}</a></li>
+                            })
+                          }
+                        </ul>
+                    </div>
+                  </div>
+                </div>
+                </section>
+                
               </div>
               <div className="column is-one-third">
                 <section className='mt-5'>
@@ -220,33 +251,6 @@ export default function Home() {
                                 </div>
                         })
                       }
-                    </div>
-                  </div>
-                </div>
-                </section>
-                <section className='mt-5'>
-                <div className="card">
-                  <div className="card-content">
-                    <div className="content">
-                      <h2>Players {lotteryPlayers.length}</h2>
-                        <ul className={`${styles.accounts} ml-0`}>
-                          {
-                            (lotteryPlayers && lotteryPlayers.length>0) &&
-                            lotteryPlayers.map((player,index)=>{
-                              return<li key={`${player}-${index}`}><a href={`https://etherscan.io/${player}`} target='_blank'>{player}</a></li>
-                            })
-                          }
-                        </ul>
-                    </div>
-                  </div>
-                </div>
-                </section>
-                <section className='mt-5'>
-                <div className="card">
-                  <div className="card-content">
-                    <div className="content">
-                      <h2>Pot</h2>
-                      <p>{lotteryPot} Ether</p>
                     </div>
                   </div>
                 </div>
