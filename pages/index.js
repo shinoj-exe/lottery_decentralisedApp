@@ -20,11 +20,33 @@ export default function Home() {
   const [lotteryPlayers,setPlayers]=useState([])
 
 
-  useEffect(()=>{
-    if(lcContract) getPot()
-    if(lcContract) getPlayer()
-    if(lcContract) getLotteryId()
-  },[lcContract])
+  // useEffect(()=>{
+  //   if(lcContract) getPot()
+  //   if(lcContract) getPlayer()
+  //   if(lcContract) getLotteryId()
+  // },[lcContract])
+
+  useEffect(() => {
+    updateState()
+  }, [lcContract])
+
+  const updateState = () => {
+    if (lcContract) getPot()
+    if (lcContract) getPlayer()
+    if (lcContract) getLotteryId()
+  }
+
+    // if (typeof window !=="undefined" && typeof window.ethereum !=="undefined") {
+  //   window.ethereum.on('accountsChanged',async()=>{
+  //     const accounts =await web3.eth.getAccounts();
+  //     console.log(accounts[0]);
+  //         setAddress(accounts[0]);
+  //   })
+  // }
+
+  // useEffect(()=>{
+  //   if(lcContract) getLotteryId()
+  // },[]);
 
   const getPot=async()=>{
     // console.log("getpot");
@@ -40,6 +62,7 @@ export default function Home() {
 
   const getHistory=async(id)=>{
     // console.log("getpot");
+    setLotteryHistory([])
     for(let i = parseInt(id); i>0;i--){
       console.log("get history");
       const winnerAddress = await lcContract.methods.lotteryWinners(i).call()
@@ -61,6 +84,8 @@ export default function Home() {
   }
 
   const enterLotteryHandler = async ()=>{
+    setError(' ');
+
     try {
       
       await lcContract.methods.enter().send({
@@ -70,6 +95,8 @@ export default function Home() {
         gasPrice: null
   
       })
+    updateState()
+
     } catch (error) {
       console.log(error.message);
       setError(error.message);
@@ -77,6 +104,8 @@ export default function Home() {
   }
 
   const pickWinnerHandler=async()=>{
+    setError(' ');
+
     try {
       
       await lcContract.methods.pickWinner().send({
@@ -86,8 +115,9 @@ export default function Home() {
         gasPrice: null
   
       })
-      const winnerAddress  = lotteryHistory[lotteryId-1].address
+      const winnerAddress  = await lcContract.methods.lotteryWinners(lotteryId).call()
       setSuccess(`The winner is ${winnerAddress}`)
+      updateState()
 
     } catch (error) {
       console.log(error.message);
@@ -109,6 +139,12 @@ export default function Home() {
         // create local contract copy
         const lc = lotteryContract(web3)
         setLcContract(lc)
+
+            window.ethereum.on('accountsChanged',async()=>{
+      const accounts =await web3.eth.getAccounts();
+      console.log(accounts[0]);
+          setAddress(accounts[0]);
+    })
 
       } catch (error) {
         console.log(error.message);
@@ -153,6 +189,9 @@ export default function Home() {
                   <p><b>Admin Only:</b> Pick Winner</p>
                   <button className='button is-primary is-large mt-3' onClick={pickWinnerHandler}>Pick Winner</button>
                 </section>
+                <section className='mt-6'>
+                  <p><b>Current Lottery ID:</b> {lotteryId}</p>
+                </section>
                 <section>
                   <div className="container has-text-danger mt-6">
                       <p>{error}</p>
@@ -173,7 +212,7 @@ export default function Home() {
                       {
                         (lotteryHistory && lotteryHistory.length>0) &&
                         lotteryHistory.map(item=>{
-                          if(lotteryId != item.id) return <div className="history-entry mt-3">
+                          if(lotteryId != item.id) return <div className="history-entry mt-3" key={item.id}>
                                   <div>Lottery #{item.id} Winner</div>
                                   <div className={styles.accounts}>
                                     <a href={`https://etherscan.io/address/${item.address}`} target='_blank'>{item.address}</a>
