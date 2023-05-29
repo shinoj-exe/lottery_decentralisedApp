@@ -1,4 +1,61 @@
+# **Ethers Lottery**
+
+
+## Run Locally
+
+1.Clone this repository to your local machine.
+
+```bash
+  git https://github.com/shinoj-exe/lottery_decentralisedApp
+```
+
+2.Go to the project directory
+```bash
+  cd lottery_decentralisedApp
+```
+
+3.Install the dependencies for both the client and server side.
+```bash
+  npm install
+```
+4.Install Truffle for compiling and deploying the contracts
+```bash
+  npm install -g truffle
+```
+5.Install hd wallet provider
+```bash
+  npm install @truffle/hdwallet-provider
+```
+6.Create a .secret file in the root directory folder and store your wallet's recovery phrase in it
+
+6.Compile the contracts 
+```bash
+  truffle compile 
+```
+
+7.Now before deploying it to the polygon testnet create a testnet in metamask(we used alchemy for creating the testnet rpc url).Create some accounts in the network and add sufficient MATIC tokens from polygon faucets.
+``` bash
+Polygon testnet details:
+Network name : Polygon Mumbai Testnet
+New RPC URL : https://polygon-mumbai.g.alchemy.com/YOUR_API_KEY
+Chain ID : 80001
+Currency symbol : MATIC
+```
+
+
+
+8.Deploy the contracts
+```bash
+ truffle deploy --network matic
+ ```
+9.Open another terminal window and start the client.
+```bash
+  cd client && npm run dev
+```
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+
 
 ## Getting Started
 
